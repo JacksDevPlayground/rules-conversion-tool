@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>rules_conversion_tool</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Markdig" Version="0.33.0" />
+      <PackageReference Include="Spectre.Console" Version="0.47.0" />
+      <PackageReference Include="Spectre.Console.Cli" Version="0.47.0" />
+      <PackageReference Include="Spectre.IO" Version="0.12.0" />
+      <PackageReference Include="YamlDotNet" Version="13.4.0" />
+    </ItemGroup>
+
+
+
+</Project>
