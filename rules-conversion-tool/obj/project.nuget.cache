@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "FTjLRcshUPkfqKSUOA1N//rGkvPNchW6rlv7hCWpGiwkOt4ECXChuc9G5ZZWpd9Ecfaw09vMSruiZHqdXTQRRg==",
+  "dgSpecHash": "pD3CBosq/a6L36DXdmOtM0Yd4mi40PPR6ToaTZwRWjLE2afOWAyk7USDPNdlFHqkhqO//jBDKj+2ywVka/NQ1A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jpr17\\src\\POC\\rules-conversion-tool\\rules-conversion-tool\\rules-conversion-tool.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/Users/jeynesb/Documents/rules-conversion-tool/rules-conversion-tool/rules-conversion-tool.csproj",
+  "expectedPackageFiles": [
+    "/Users/jeynesb/.nuget/packages/markdig/0.33.0/markdig.0.33.0.nupkg.sha512",
+    "/Users/jeynesb/.nuget/packages/spectre.console/0.47.0/spectre.console.0.47.0.nupkg.sha512",
+    "/Users/jeynesb/.nuget/packages/spectre.console.cli/0.47.0/spectre.console.cli.0.47.0.nupkg.sha512",
+    "/Users/jeynesb/.nuget/packages/spectre.io/0.12.0/spectre.io.0.12.0.nupkg.sha512",
+    "/Users/jeynesb/.nuget/packages/system.memory/4.5.5/system.memory.4.5.5.nupkg.sha512",
+    "/Users/jeynesb/.nuget/packages/yamldotnet/13.4.0/yamldotnet.13.4.0.nupkg.sha512"
+  ],
   "logs": []
 }

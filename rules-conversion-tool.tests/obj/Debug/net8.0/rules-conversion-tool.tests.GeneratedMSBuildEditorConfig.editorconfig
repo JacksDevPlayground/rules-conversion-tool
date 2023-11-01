@@ -8,4 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Rules.Conversion.Tests
-build_property.ProjectDir = C:\Users\jpr17\src\POC\rules-conversion-tool\rules-conversion-tool.tests\
+build_property.ProjectDir = /Users/jeynesb/Documents/rules-conversion-tool/rules-conversion-tool.tests/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 

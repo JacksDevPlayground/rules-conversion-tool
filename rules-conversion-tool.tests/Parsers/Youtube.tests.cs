@@ -30,8 +30,8 @@ namespace Rules.Conversion.Tests.Parsers
         public void Parse_ShouldExtractYoutubeLinks_WithoutFigureText()
         {
             // Arrange
-            var filePath =
-                "C:\\Users\\jpr17\\src\\POC\\rules-conversion-tool\\rules-conversion-tool.tests\\Test-rules/rule.md"; // Replace with the correct path to your file
+            var filePath = "../../../Test-rules/rule.md";
+                // "C:\\Users\\jpr17\\src\\POC\\rules-conversion-tool\\rules-conversion-tool.tests\\Test-rules/rule.md"; // Replace with the correct path to your file
             var rawContent = File.ReadAllText(filePath);
             var content = ConversionCommand.GetBodyContent(rawContent);
 
