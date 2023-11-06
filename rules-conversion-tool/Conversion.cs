@@ -52,6 +52,10 @@ public class ConversionSettings : CommandSettings
     [Description("Path to the markdown file or directory.")]
     public string? Path { get; set; }
 
+    [CommandArgument(1, "<OUTPUT_DIR>")]
+    [Description("Output path, folder will be filled")]
+    public string? Output { get; set; }
+
     public required List<ParseContent> SelectedContent { get; set; }
 
     // Add a new property to store the selected parsers
@@ -114,7 +118,7 @@ public class ConversionCommand : Command<ConversionSettings>
         AnsiConsole.MarkupLine($"[green]Selected Content:[/] {string.Join(", ", settings.SelectedContent!)}");
         AnsiConsole.MarkupLine($"[green]Selected Options:[/] {string.Join(", ", settings.SelectedParsers!)}");
 
-        var markdownProperties = SpiltFrontMatterFromMarkdown(markdown);
+        var markdownProperties = SpiltFrontMatterFromMarkdown(markdown, settings);
         if (markdownProperties is null) throw new Exception("No Markdown Properties Found");
 
         var blurbContent = markdownProperties?.Blurb?.Content;
@@ -215,19 +219,19 @@ public class ConversionCommand : Command<ConversionSettings>
         return content;
     }
 
-    private static (string, string) CreateIndexMdoc(Dictionary<string, object> metadata)
+    private static (string, string) CreateIndexMdoc(Dictionary<string, object> metadata, ConversionSettings settings)
     {
-        var outputDir = Path.Combine(Directory.GetCurrentDirectory(), metadata["uri"].ToString() ?? string.Empty);
+        var outputDir = Path.Combine(settings.Output, metadata["uri"].ToString() ?? string.Empty);
         Directory.CreateDirectory(outputDir);
         var outputPath = Path.Combine(outputDir, "index.mdoc");
         return (outputDir, outputPath);
     }
 
-    private static (string, string) CreateBlurbMdoc(Dictionary<string, object> metadata)
+    private static (string, string) CreateBlurbMdoc(Dictionary<string, object> metadata, ConversionSettings settings)
     {
         try
         {
-            var outputDir = Path.Combine(Directory.GetCurrentDirectory(), metadata["uri"].ToString() ?? string.Empty);
+            var outputDir = Path.Combine(settings.Output, metadata["uri"].ToString() ?? string.Empty);
             Directory.CreateDirectory(outputDir);
             var outputPath = Path.Combine(outputDir, "blurb.mdoc");
             return (outputDir, outputPath);
@@ -254,7 +258,7 @@ public class ConversionCommand : Command<ConversionSettings>
         return contentWithoutFrontmatter;
     }
 
-    private static MarkdownProperties? SpiltFrontMatterFromMarkdown(string markdown)
+    private static MarkdownProperties? SpiltFrontMatterFromMarkdown(string markdown, ConversionSettings settings)
     {
         AnsiConsole.MarkupLine($"[blue]Setting up parser[/]");
         var pipeline = new MarkdownPipelineBuilder().UseYamlFrontMatter().Build();
@@ -293,11 +297,11 @@ public class ConversionCommand : Command<ConversionSettings>
 
         AnsiConsole.MarkupLine($"[blue]Splitting Blurb [/]");
         var blurb = GetBlurbContent(justContent);
-        var (_, blurbOutPath) = CreateBlurbMdoc(metadata);
+        var (_, blurbOutPath) = CreateBlurbMdoc(metadata, settings);
 
         AnsiConsole.MarkupLine($"[blue]Splitting Body [/]");
         var body = GetBodyContent(justContent);
-        var (_, bodyOutPath) = CreateIndexMdoc(metadata);
+        var (_, bodyOutPath) = CreateIndexMdoc(metadata, settings);
 
         return new MarkdownProperties()
         {
