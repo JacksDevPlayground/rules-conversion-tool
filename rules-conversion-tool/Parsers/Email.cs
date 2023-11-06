@@ -24,6 +24,8 @@ public class Email
             // Only get custom blocks that are of type "email-template"
             string containerType = customContainer.Info;
             if (string.IsNullOrEmpty(containerType) || containerType != "email-template") continue;
+            
+            Console.WriteLine($"[DEBUG] customContainer.Count {customContainer.Count}");
 
             foreach (Block container in customContainer)
             {
@@ -67,7 +69,7 @@ public class Email
                     case CustomContainer c:
                         if (c.Info == "email-content") 
                         {
-                            emailComponent.Append(markdown.Substring(c.Span.Start, c.Span.End - c.Span.Start).Replace("::: email-content", "").Trim());
+                            emailComponent.Append(markdown.Substring(c[0].Span.Start, c[^1].Span.End - c[0].Span.Start + 1).Replace("::: email-content", "").Trim());
                             emailComponent.Append("\n{% /EmailTemplateComponent %}");
                         }
                         break;

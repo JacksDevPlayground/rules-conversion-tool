@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Text;
 using System.Text.RegularExpressions;
 using Markdig;
@@ -21,7 +22,9 @@ public class GoodBad
         var parsedMarkdown = new StringBuilder(markdown);
         var pipeline = new MarkdownPipelineBuilder().UseCustomContainers().UseMediaLinks().Build();
         var document = Markdown.Parse(parsedMarkdown.ToString(), pipeline);
-        var replacements = new Dictionary<string, string>();
+        // var replacements = new Dictionary<string, string>();
+        List<(string, string)> replacements = new List<(string, string)>();
+        // var replacements = new ArrayList();
 
         foreach (var block in document)
         {
@@ -66,11 +69,11 @@ public class GoodBad
                 var start = block.Span.Start;
                 var end = block.Span.End;
                 var originalContent = markdown.Substring(start, end - start + 1);
-                replacements.Add(originalContent, transformedContent);
+                replacements.Add((originalContent, transformedContent));
             }
         }
 
-        markdown = replacements.Aggregate(markdown, (current, pair) => current.Replace(pair.Key, pair.Value));
-        return markdown;
+        // markdown = replacements.Aggregate(markdown, (current, pair) => current.Replace(pair.Key, pair.Value));
+        return replacements.Aggregate(markdown, (current, r) => current.Replace(r.Item1, r.Item2));
     }
 }

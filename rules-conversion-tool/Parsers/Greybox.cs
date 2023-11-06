@@ -15,7 +15,7 @@ public class Greybox
         // Parse the cloned markdown for greybox blocks
         var pipeline = new MarkdownPipelineBuilder().UseCustomContainers().UseMediaLinks().Build();
         var document = Markdown.Parse(parsedMarkdown.ToString(), pipeline);
-        var replacements = new Dictionary<string, string>();
+        List<(string, string)> replacements = new List<(string, string)>();
         foreach (var block in document)
         {
             if (block is not CustomContainer customContainer) continue;
@@ -36,11 +36,10 @@ public class Greybox
             var start = block.Span.Start;
             var end = block.Span.End;
             var originalContent = markdown.Substring(start, end - start + 1);
-            replacements.Add(originalContent, transformedContent);
+            replacements.Add((originalContent, transformedContent));
         }
 
         // Apply all replacements to the original markdown
-        return replacements.Aggregate(markdown, (current, pair) 
-            => current.Replace(pair.Key, pair.Value));
+        return replacements.Aggregate(markdown, (current, r) => current.Replace(r.Item1, r.Item2));
     }
 }
