@@ -17,7 +17,7 @@ namespace rules_conversion_tool.Parsers
             // Parse the cloned markdown for YouTube blocks
             var pipeline = new MarkdownPipelineBuilder().UseCustomContainers().Build();
             var document = Markdown.Parse(parsedMarkdown.ToString(), pipeline);
-            var replacements = new Dictionary<string, string>();
+            List<(string, string)> replacements = new List<(string, string)>();
             
             for (int i = 0; i < document.Count; i++)
             {
@@ -43,20 +43,19 @@ namespace rules_conversion_tool.Parsers
                         {
                             figureText = string.Empty;
                         }
-                        replacements.Add($"**{figureText}**", string.Empty);
+                        replacements.Add(($"**{figureText}**", string.Empty));
                         i++; // Skip the next block since we've processed it
                     }
 
                     figureText = figureText.Replace("\n", " ").Replace("\r", "").Trim().Trim('*').Trim();
                     var transformedBlock =
                         $"{{% YoutubeVideoComponent videoId=\"{videoId}\" figureText=\"{figureText}\"  /%}}";
-                    replacements.Add($"`{codeInline.Content}`", transformedBlock);
+                    replacements.Add(($"`{codeInline.Content}`", transformedBlock));
                 }
             }
 
             // Now, replace the matches in the original markdown
-            markdown = replacements.Aggregate(markdown, (current, pair) => current.Replace(pair.Key, pair.Value.Trim('`').Trim('*').Trim('*')));
-            return markdown;
+            return replacements.Aggregate(markdown, (current, r) => current.Replace(r.Item1, r.Item2));
         }
         
         private static bool FindYoutubeBlock(CodeInline block)

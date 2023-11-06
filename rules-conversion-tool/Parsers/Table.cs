@@ -15,7 +15,7 @@ public class Table
         // Parse the cloned markdown for YouTube blocks
         var pipeline = new MarkdownPipelineBuilder().UseCustomContainers().UseMediaLinks().Build();
         var document = Markdown.Parse(parsedMarkdown.ToString(), pipeline);
-        var replacements = new Dictionary<string, string>();
+        List<(string, string)> replacements = new List<(string, string)>();
         foreach (var block in document)
         {
             if (block is not CustomContainer customContainer) continue;

@@ -88,8 +88,9 @@ public class ConversionCommand : Command<ConversionSettings>
         // Now, process the files using the selected parsers
         if (Directory.Exists(settings.Path))
         {
-            foreach (var file in Directory.GetFiles(settings.Path, "*.md"))
+            foreach (var file in Directory.GetFiles(settings.Path, "rule.md", SearchOption.AllDirectories))
             {
+                Console.WriteLine($"[DEBUG] parsing {file}");
                 Parse(file, settings);
             }
         }
@@ -155,7 +156,6 @@ public class ConversionCommand : Command<ConversionSettings>
     public static string GetBlurbContent(string markdown)
     {
         // Find the first "<!--endintro-->" and return everything before it
-        AnsiConsole.WriteLine(markdown);
         var index = markdown.IndexOf("<!--endintro-->");
         if (index <= 0) return string.Empty;
         return markdown[..index].Trim();
@@ -176,7 +176,8 @@ public class ConversionCommand : Command<ConversionSettings>
     private static string ParseParserContent(string markdown, List<ParserType> parsers,
         MarkdownProperties? markdownProperties)
     {
-        if (string.IsNullOrEmpty(markdown)) throw new Exception("Markdown was empty");
+        // if (string.IsNullOrEmpty(markdown)) throw new Exception("Markdown was empty");
+        if (string.IsNullOrEmpty(markdown)) return "";
 
         if (markdownProperties is null) throw new Exception("No Markdown Properties Found");
 
@@ -200,11 +201,11 @@ public class ConversionCommand : Command<ConversionSettings>
                 case ParserType.Twitter:
                     content = Twitter.Parse(content);
                     break;
-                case ParserType.Email:
-                    content = Email.Parse(content);
-                    break;
                 case ParserType.Greybox:
                     content = Greybox.Parse(content);
+                    break;
+                case ParserType.Email:
+                    content = Email.Parse(content);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -17,7 +17,7 @@ public partial class Twitter
             // Parse the cloned markdown for YouTube blocks
             var pipeline = new MarkdownPipelineBuilder().UseCustomContainers().Build();
             var document = Markdown.Parse(parsedMarkdown.ToString(), pipeline);
-            var replacements = new Dictionary<string, string>();
+            List<(string, string)> replacements = new List<(string, string)>();
             
             for (var i = 0; i < document.Count; i++)
             {
@@ -31,13 +31,12 @@ public partial class Twitter
                         $"{{% TweetComponent #{tweetId}  /%}}";
                     
                     //{% TweetComponent #abc123 /%}
-                    replacements.Add($"`{codeInline.Content}`", transformedBlock);
+                    replacements.Add(($"`{codeInline.Content}`", transformedBlock));
                 }
             }
 
             // Now, replace the matches in the original markdown
-            markdown = replacements.Aggregate(markdown, (current, pair) => current.Replace(pair.Key, pair.Value.Trim('`').Trim('*').Trim('*')));
-            return markdown;
+            return replacements.Aggregate(markdown, (current, r) => current.Replace(r.Item1, r.Item2));
         }
         
         private static bool FindTwitterBlock(CodeInline block)
