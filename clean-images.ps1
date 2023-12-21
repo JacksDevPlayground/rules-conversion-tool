@@ -7,8 +7,8 @@ param (
 $fileTypes = @('.bmp', '.docx', '.drawio', '.gif', '.ics', '.jpeg', '.jpg', '.m4a', '.mp3', '.mp4', '.msg', '.oft', '.pdf', '.png', '.pptx', '.sql', '.svg', '.txt', '.webp', '.xlsx', '.zip')
 
 # Define the log file paths
-$logFile = "C:\Users\jpr17\src\SSW\SSW.Rules.Content\DeletionLog.txt"
-$debugLogFile = "C:\Users\jpr17\src\SSW\SSW.Rules.Content\DebugLog.txt"
+$logFile = "rules-conversion-tool\DeletionLog.txt"
+$debugLogFile = "rules-conversion-tool\DebugLog.txt"
 
 # Function to filter files by defined types and log information for debugging
 function Filter-FilesByType {
