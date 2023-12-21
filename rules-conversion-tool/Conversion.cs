@@ -139,6 +139,18 @@ public class ConversionCommand : Command<ConversionSettings>
                     if (string.IsNullOrEmpty(bodyContent)) AnsiConsole.MarkupLine($"[red]No Blurb Content Found[/]");
                     var body1 = ParseParserContent(GetBodyContent(markdown), settings.SelectedParsers!, markdownProperties!);
                     File.WriteAllText(markdownProperties.Value.Body.Value.OutPath, body1);
+
+                    // Handle Frontmatter 
+                    string frontmatterContent = string.Empty;
+                    if (string.IsNullOrEmpty(markdownProperties.Value.Frontmatter)) AnsiConsole.MarkupLine($"[red]No Frontmatter Found[/]");
+                    // Append the Frontmatter to the Body content
+                    if (!string.IsNullOrEmpty(markdownProperties.Value.Frontmatter))
+                    {
+                        frontmatterContent = markdownProperties.Value.Frontmatter;
+                        var combinedContent = frontmatterContent + Environment.NewLine + body1;
+                        File.WriteAllText(markdownProperties.Value.Body.Value.OutPath, combinedContent);
+                    }
+
                     break;
                 case ParseContent.BlurbOnly:
                     if (string.IsNullOrEmpty(blurbContent)) throw new Exception("No Blurb Content Found");
@@ -190,9 +202,6 @@ public class ConversionCommand : Command<ConversionSettings>
         {
             switch (parser)
             {
-                case ParserType.Frontmatter:
-                    Frontmatter.Parse(markdownProperties.Value.Metadata);
-                    break;
                 case ParserType.GoodBad:
                     content = GoodBad.Parse(content);
                     break;
@@ -210,6 +219,8 @@ public class ConversionCommand : Command<ConversionSettings>
                     break;
                 case ParserType.Email:
                     content = Email.Parse(content);
+                    break;
+                case ParserType.Frontmatter:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -315,7 +326,7 @@ public class ConversionCommand : Command<ConversionSettings>
                 Content = body,
                 OutPath = bodyOutPath
             },
-            Frontmatter = frontmatter,
+            Frontmatter = Frontmatter.Parse(metadata),
             Metadata = metadata
         };
     }
